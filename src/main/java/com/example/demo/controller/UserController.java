@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.common.ApiResponse;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,7 +12,7 @@ public class UserController {
 
     private final UserService userService;
 
-    // 自动注入 UserService
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }

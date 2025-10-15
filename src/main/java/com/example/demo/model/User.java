@@ -1,7 +1,13 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     private String role;
 
@@ -9,18 +15,18 @@ public class User {
     public User() {
     }
 
-    public User(int id, String name, String role) {
+    public User(Integer id, String name, String role) {
         this.id = id;
         this.name = name;
         this.role = role;
     }
 
     // Getter 和 Setter
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

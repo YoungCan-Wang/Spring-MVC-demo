@@ -4,7 +4,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-@Service  // 注册为 Spring 管理的业务组件
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
@@ -14,11 +14,11 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
     public User createUser(User user) {
-        userRepository.save(user);
-        return user;
+        return userRepository.save(user);
     }
 }
