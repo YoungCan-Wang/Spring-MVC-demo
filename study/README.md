@@ -10,6 +10,7 @@
 ## 第二章：Web层开发 (Web Layer)
 
 - [2.1 全局异常处理](./02-web-layer/01-global-error-handling.md)
+- [2.2 DTO 设计与对象映射](./02-web-layer/02-dto-and-mapping.md)
 
 ## 第三章：数据持久化 (Data Persistence)
 

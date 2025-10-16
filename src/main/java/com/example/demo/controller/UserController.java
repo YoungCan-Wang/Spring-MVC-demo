@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.common.ApiResponse;
-import com.example.demo.model.User;
+import com.example.demo.dto.UserCreateRequest;
+import com.example.demo.dto.UserResponse;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<User> getUser(@PathVariable int id) {
+    public ApiResponse<UserResponse> getUser(@PathVariable int id) {
         return ApiResponse.success(userService.getUserById(id));
     }
 
     @PostMapping("/register")
-    public ApiResponse<User> register(@RequestBody User user) {
-        return ApiResponse.success(userService.createUser(user));
+    public ApiResponse<UserResponse> register(@RequestBody UserCreateRequest createRequest) {
+        return ApiResponse.success(userService.createUser(createRequest));
     }
 }
