@@ -1,8 +1,18 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 /**
  * DTO for receiving user creation requests from the client.
  * Using a record for immutability and conciseness.
  */
-public record UserCreateRequest(String name, String role) {
+public record UserCreateRequest(
+        @NotBlank(message = "Username cannot be blank")
+        @Size(min = 2, max = 32, message = "Username must be between 2 and 32 characters")
+        String name,
+
+        @NotBlank(message = "Role cannot be blank")
+        String role
+) {
 }
