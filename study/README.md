@@ -17,3 +17,7 @@
 ## 第三章：数据持久化 (Data Persistence)
 
 - [3.1 JPA 核心概念与实体设计](./03-data-layer/01-jpa-and-entities.md)
+
+## 第四章：进阶主题 (Advanced Topics)
+
+- [4.1 自定义错误码体系](./04-advanced/01-custom-error-code-system.md)

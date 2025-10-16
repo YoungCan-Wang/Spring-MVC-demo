@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.common.BusinessException;
+import com.example.demo.common.ErrorCode;
 import com.example.demo.dto.UserCreateRequest;
 import com.example.demo.dto.UserResponse;
 import com.example.demo.mapper.UserMapper;
@@ -20,7 +22,7 @@ public class UserService {
 
     public UserResponse getUserById(int id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toResponse(user);
     }
 
