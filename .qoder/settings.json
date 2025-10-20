@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "ask": [
+      "Read(!/Users/youngcan/server/demo/**)",
+      "Edit(!/Users/youngcan/server/demo/**)"
+    ],
+    "allow": [
+      "Read(/Users/youngcan/server/demo/**)",
+      "Edit(/Users/youngcan/server/demo/**)"
+    ]
+  },
+  "memoryImport": {},
+  "monitoring": {}
+}

@@ -1,15 +1,23 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+  autoconfigure:
+
   jpa:
     hibernate:
-      ddl-auto: update
+      # ddl-auto: create-drop # 禁用此功能，交由 Flyway 管理
+      ddl-auto: none
     show-sql: true
-    properties:
-      hibernate.format_sql: true
+
+  # Flyway 配置
+  flyway:
+    enabled: true
+    baseline-on-migrate: true # 如果数据库中已存在表，则将它们标记为基线
+
+  # 数据源配置 (请替换为您的本地 MySQL 信息)
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: Wyk060514.
+
   h2:
     console:
       enabled: true

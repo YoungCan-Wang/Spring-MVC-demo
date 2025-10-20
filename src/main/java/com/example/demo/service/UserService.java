@@ -4,6 +4,7 @@ import com.example.demo.common.BusinessException;
 import com.example.demo.common.ErrorCode;
 import com.example.demo.dto.UserCreateRequest;
 import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
@@ -30,5 +31,30 @@ public class UserService {
         User user = userMapper.toEntity(createRequest);
         User savedUser = userRepository.save(user);
         return userMapper.toResponse(savedUser);
+    }
+
+    public UserResponse updateUser(int id, UserUpdateRequest updateRequest) {
+        // 1. 查找用户，如果不存在则抛出异常
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        // 2. 更新用户信息
+        existingUser.setName(updateRequest.name());
+        existingUser.setRole(updateRequest.role());
+
+        // 3. 保存更新后的用户
+        User updatedUser = userRepository.save(existingUser);
+
+        // 4. 转换为 Response DTO 并返回
+        return userMapper.toResponse(updatedUser);
+    }
+
+    public void deleteUserById(int id) {
+        // 1. 检查用户是否存在，不存在则抛出异常
+        if (!userRepository.existsById(id)) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+        }
+        // 2. 删除用户
+        userRepository.deleteById(id);
     }
 }

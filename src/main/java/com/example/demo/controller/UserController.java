@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.common.ApiResponse;
 import com.example.demo.dto.UserCreateRequest;
 import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,6 +28,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "成功找到用户"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "当用户ID不存在时"),
     })
+
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> getUser(
             @Parameter(description = "用户的唯一ID", required = true, example = "1")
@@ -44,5 +46,28 @@ public class UserController {
     public ApiResponse<UserResponse> register(@Valid @RequestBody UserCreateRequest createRequest) {
         UserResponse createdUser = userService.createUser(createRequest);
         return ApiResponse.success(createdUser);
+    }
+
+    @Operation(summary = "更新用户信息", description = "传入用户ID和新的用户信息，更新该用户。")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "用户更新成功"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "当用户ID不存在时"),
+    })
+
+    @PutMapping("/{id}")
+    public ApiResponse<UserResponse> updateUser(@PathVariable int id, @Valid @RequestBody UserUpdateRequest updateRequest) {
+        UserResponse updatedUser = userService.updateUser(id, updateRequest);
+        return ApiResponse.success(updatedUser);
+    }
+
+    @Operation(summary = "删除用户", description = "传入用户ID，删除该用户。")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "用户删除成功"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "当用户ID不存在时"),
+    })
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> deleteUser(@PathVariable int id) {
+        userService.deleteUserById(id);
+        return ApiResponse.success(null);
     }
 }
