@@ -42,6 +42,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "用户创建成功"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "请求参数不合法（如name为空）"),
     })
+
     @PostMapping("/register")
     public ApiResponse<UserResponse> register(@Valid @RequestBody UserCreateRequest createRequest) {
         UserResponse createdUser = userService.createUser(createRequest);
@@ -65,6 +66,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "用户删除成功"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "当用户ID不存在时"),
     })
+
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteUser(@PathVariable int id) {
         userService.deleteUserById(id);
