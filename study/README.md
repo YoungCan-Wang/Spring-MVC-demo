@@ -17,6 +17,11 @@
 ## 第三章：数据持久化 (Data Persistence)
 
 - [3.1 JPA 核心概念与实体设计](./03-data-layer/01-jpa-and-entities.md)
+- [3.2 MySQL 与 SQL 基础](./03-data-layer/02-mysql-and-sql-basics.md)
+- [3.3 SQL 查询与关联](./03-data-layer/03-sql-queries-and-joins.md)
+- [3.4 SQL 索引与优化](./03-data-layer/04-sql-index-optimization.md)
+- [3.5 事务管理原理与实验](./03-data-layer/05-transaction-management.md)
+- [3.6 事务管理最佳实践](./03-data-layer/06-transaction-best-practices.md)
 
 ## 第四章：进阶主题 (Advanced Topics)
 

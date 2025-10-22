@@ -45,8 +45,79 @@ Spring 通过 `@Transactional` 注解提供声明式事务管理，它基于 **A
 3. **事务传播**：方法间的事务传播行为
 4. **只读事务**：优化查询性能
 
-## 5. 注意事项
+## 5. 实验结果总结
+
+### ✅ 成功验证的概念：
+
+#### 实验1：正常事务提交
+```bash
+curl -X POST http://localhost:8080/api/transaction/test-success
+# 结果：两个用户在同一事务中成功创建
+```
+
+#### 实验2：事务回滚（核心实验）
+```bash
+curl -X POST http://localhost:8080/api/transaction/test-rollback
+# 结果：虽然执行了 save() 操作，但异常触发回滚，数据未保存
+# 证明：事务的原子性 - 要么全部成功，要么全部失败
+```
+
+#### 实验3：事务传播
+```bash
+curl -X POST http://localhost:8080/api/transaction/test-propagation
+# 结果：两个方法在同一事务中执行，用户数量增加2个
+```
+
+### 🔍 重要发现：
+
+#### Spring AOP 限制
+- **同一个类内部方法调用不会触发事务代理**
+- 这是因为 Spring AOP 基于代理模式，内部调用绕过了代理
+- 解决方案：将事务方法提取到不同的 Service 类中
+
+#### 事务注解最佳实践
+```java
+@Service
+@Transactional(readOnly = true) // 类级别：默认只读事务
+public class UserService {
+    
+    @Transactional // 方法级别：覆盖类级别，使用读写事务
+    public UserResponse createUser(UserCreateRequest request) {
+        // 写操作
+    }
+    
+    // 查询方法自动使用只读事务（继承类级别）
+    public UserResponse getUserById(int id) {
+        // 只读操作
+    }
+}
+```
+
+## 6. 关键学习点
+
+### 事务回滚机制
+- 默认只对 `RuntimeException` 和 `Error` 回滚
+- 检查异常（Checked Exception）不会触发回滚
+- 可通过 `rollbackFor` 属性自定义回滚条件
+
+### 性能优化
+- 只读事务 `@Transactional(readOnly = true)` 可以优化查询性能
+- 数据库可以针对只读事务进行优化（如不加锁）
+
+### 事务边界
+- 事务边界应该在 Service 层，不是 Controller 或 Repository
+- 一个业务操作对应一个事务
+
+## 7. 注意事项
 
 - `@Transactional` 只对 `public` 方法有效
 - 同一个类内部方法调用不会触发事务代理（Spring AOP 限制）
 - 默认只对 `RuntimeException` 和 `Error` 回滚，不对检查异常回滚
+- 事务方法不应该捕获异常，否则会阻止回滚
+
+## 8. 下一步学习
+
+完成事务管理后，下一步将学习：
+- HikariCP 连接池配置
+- 数据库连接池参数调优
+- 监控数据库连接状态
