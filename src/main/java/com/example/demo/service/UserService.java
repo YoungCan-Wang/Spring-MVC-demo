@@ -10,11 +10,13 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true) // 默认只读事务，提高查询性能
 public class UserService {
 
     private final UserRepository userRepository;
@@ -31,12 +33,14 @@ public class UserService {
         return userMapper.toResponse(user);
     }
 
+    @Transactional // 写操作需要读写事务
     public UserResponse createUser(UserCreateRequest createRequest) {
         User user = userMapper.toEntity(createRequest);
         User savedUser = userRepository.save(user);
         return userMapper.toResponse(savedUser);
     }
 
+    @Transactional // 写操作需要读写事务
     public UserResponse updateUser(int id, UserUpdateRequest updateRequest) {
         // 1. 查找用户，如果不存在则抛出异常
         User existingUser = userRepository.findById(id)
@@ -53,6 +57,7 @@ public class UserService {
         return userMapper.toResponse(updatedUser);
     }
 
+    @Transactional // 写操作需要读写事务
     public void deleteUserById(int id) {
         // 1. 检查用户是否存在，不存在则抛出异常
         if (!userRepository.existsById(id)) {
