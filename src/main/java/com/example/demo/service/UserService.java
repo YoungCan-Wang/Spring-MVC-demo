@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.common.BusinessException;
 import com.example.demo.common.ErrorCode;
+import com.example.demo.dto.RoleCountDto;
 import com.example.demo.dto.UserCreateRequest;
 import com.example.demo.dto.UserResponse;
 import com.example.demo.dto.UserUpdateRequest;
@@ -9,6 +10,9 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -56,5 +60,20 @@ public class UserService {
         }
         // 2. 删除用户
         userRepository.deleteById(id);
+    }
+
+    public List<RoleCountDto> countUsersByRole() {
+        return userRepository.countUsersByRole();
+    }
+
+    public List<RoleCountDto> countUsersByRoleHavingMinCount(long minCount) {
+        return userRepository.countUsersByRoleHavingMinCount(minCount);
+    }
+
+    public List<UserResponse> findUsersByNameAndRole(String name, String role) {
+        List<User> users = userRepository.findByNameAndRole(name, role);
+        return users.stream()
+                .map(userMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }
