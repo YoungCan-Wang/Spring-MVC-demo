@@ -4,6 +4,8 @@ import com.example.demo.service.TransactionExperimentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,9 +14,29 @@ import java.util.Map;
 public class TransactionController {
 
     private final TransactionExperimentService transactionService;
+    private final DataSource dataSource;
 
-    public TransactionController(TransactionExperimentService transactionService) {
+    public TransactionController(TransactionExperimentService transactionService, DataSource dataSource) {
         this.transactionService = transactionService;
+        this.dataSource = dataSource;
+    }
+
+    /**
+     * 模拟连接泄漏 - 故意不关闭连接
+     */
+    @GetMapping("/test-leak")
+    public String testLeak() throws Exception {
+        System.out.println("🚨 开始模拟连接泄漏...");
+        
+        var conn = dataSource.getConnection();  // 故意不放入 try-with-resources
+        System.out.println("📡 获取了连接: " + conn);
+        
+        Thread.sleep(65_000); // 等待65秒，超过泄漏检测阈值(60秒)
+        
+        // conn.close(); // 故意不关，观察日志告警
+        System.out.println("💀 连接泄漏模拟完成，连接未关闭");
+        
+        return "leak simulated";
     }
 
     /**
